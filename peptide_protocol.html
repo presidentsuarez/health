@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --card: #111115;
+    --card-edge: #1a1a22;
+    --text: #e8e6e1;
+    --text-dim: #7a7880;
+    --accent: #c5f82a;
+    --accent-dim: rgba(197,248,42,0.08);
+    --orange: #ff6b35;
+    --blue: #4ecdc4;
+    --red: #ff3860;
+    --purple: #a78bfa;
+    --border: #222230;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+    background: var(--bg);
+    min-height: 100dvh;
+  }
+
+  /* === HEADER === */
+  .header {
+    padding: 48px 0 32px;
+    text-align: center;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .header .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(197,248,42,0.15);
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .header .sub {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  /* === SECTION === */
+  .section { margin-top: 32px; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    padding-left: 2px;
+  }
+
+  /* === CARDS === */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    border-radius: 0 2px 2px 0;
+  }
+  .card.green::before { background: var(--accent); }
+  .card.orange::before { background: var(--orange); }
+  .card.blue::before { background: var(--blue); }
+  .card.red::before { background: var(--red); }
+  .card.purple::before { background: var(--purple); }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .dot.green { background: var(--accent); box-shadow: 0 0 8px rgba(197,248,42,0.4); }
+  .dot.orange { background: var(--orange); box-shadow: 0 0 8px rgba(255,107,53,0.4); }
+  .dot.blue { background: var(--blue); box-shadow: 0 0 8px rgba(78,205,196,0.4); }
+  .dot.purple { background: var(--purple); box-shadow: 0 0 8px rgba(167,139,250,0.4); }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .row:last-child { border-bottom: none; }
+  .row-label { font-size: 12px; color: var(--text-dim); font-weight: 400; }
+  .row-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: right;
+  }
+  .row-value.highlight { color: var(--accent); }
+  .row-value.orange-hl { color: var(--orange); }
+  .row-value.purple-hl { color: var(--purple); }
+
+  /* === SCHEDULE === */
+  .schedule-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .schedule-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .schedule-header .time-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .time-icon.am {
+    background: linear-gradient(135deg, rgba(255,170,50,0.15), rgba(255,107,53,0.1));
+    border: 1px solid rgba(255,170,50,0.2);
+  }
+  .time-icon.pm {
+    background: linear-gradient(135deg, rgba(78,205,196,0.12), rgba(78,140,250,0.08));
+    border: 1px solid rgba(78,205,196,0.2);
+  }
+  .time-icon.sun {
+    background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(139,92,246,0.1));
+    border: 1px solid rgba(167,139,250,0.2);
+  }
+  .schedule-header .time-label { font-weight: 700; font-size: 15px; }
+  .schedule-header .time-sub { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
+  .schedule-items { padding: 4px 0; }
+  .schedule-item {
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .schedule-item + .schedule-item { border-top: 1px solid rgba(255,255,255,0.025); }
+  .sched-name { font-size: 13px; font-weight: 500; }
+  .sched-dose {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .sched-dose.green-d { color: var(--accent); background: var(--accent-dim); }
+  .sched-dose.orange-d { color: var(--orange); background: rgba(255,107,53,0.1); }
+  .sched-dose.purple-d { color: var(--purple); background: rgba(167,139,250,0.1); }
+
+  /* === TITRATION TABLE === */
+  .titration-table { width: 100%; border-collapse: collapse; }
+  .titration-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  .titration-table th:last-child { text-align: right; }
+  .titration-table td {
+    font-size: 13px;
+    padding: 9px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.025);
+    font-weight: 500;
+  }
+  .titration-table td:last-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-align: right;
+    color: var(--purple);
+    font-size: 13px;
+  }
+  .titration-table tr.active td { color: var(--text); }
+  .titration-table tr.active td:first-child { position: relative; padding-left: 14px; }
+  .titration-table tr.active td:first-child::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  /* === TIMELINE === */
+  .timeline-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .timeline-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    border-radius: 0 2px 2px 0;
+  }
+  .tl-phase {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tl-dates { font-size: 12px; color: var(--text-dim); margin-bottom: 10px; }
+  .tl-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .tl-items { list-style: none; padding: 0; }
+  .tl-items li {
+    font-size: 13px;
+    color: var(--text);
+    padding: 4px 0;
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+  .tl-items li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-dim);
+  }
+  .phase-1::before { border-color: var(--blue) !important; }
+  .phase-2::before { border-color: var(--accent) !important; }
+  .phase-3::before { border-color: var(--orange) !important; }
+  .phase-4::before { border-color: var(--red) !important; }
+
+  .timeline-card.tc-1::before { background: var(--blue); }
+  .timeline-card.tc-1 .tl-phase { color: var(--blue); }
+  .timeline-card.tc-2::before { background: var(--accent); }
+  .timeline-card.tc-2 .tl-phase { color: var(--accent); }
+  .timeline-card.tc-3::before { background: var(--orange); }
+  .timeline-card.tc-3 .tl-phase { color: var(--orange); }
+  .timeline-card.tc-4::before { background: var(--red); }
+  .timeline-card.tc-4 .tl-phase { color: var(--red); }
+
+  .reta-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .reta-badge.r1 { color: var(--blue); background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.2); }
+  .reta-badge.r2 { color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(197,248,42,0.15); }
+  .reta-badge.r3 { color: var(--orange); background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.2); }
+
+  /* === TIPS === */
+  .tip-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .tip-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .tip-text {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .tip-text strong { color: var(--text); font-weight: 600; }
+
+  /* === RULES === */
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rule-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.35;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .rule-chip .r-icon { flex-shrink: 0; font-size: 14px; }
+
+  /* === SUPPLY === */
+  .supply-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .supply-card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .supply-card .s-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .supply-card .s-unit {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+  .supply-card .s-label { font-size: 12px; font-weight: 500; margin-top: 8px; color: var(--text); }
+
+  /* === MACRO STRIP === */
+  .macro-strip { display: flex; gap: 6px; }
+  .macro-pill {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .macro-pill .m-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .macro-pill .m-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 3px;
+  }
+  .macro-pill.primary .m-val { color: var(--accent); }
+
+  /* === FOOTER === */
+  .footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+  }
+  .footer .motto {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--accent), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .footer .f-sub { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+
+  /* === ANIMATION === */
+  .card, .schedule-block, .rule-chip, .supply-card, .macro-pill, .timeline-card, .tip-card {
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="tag">12-Week Phase</div>
+  <h1>Peptide Protocol</h1>
+  <div class="sub">11% → 8% BF &nbsp;·&nbsp; Full Stack &nbsp;·&nbsp; Recomp</div>
+</div>
+
+<!-- RECONSTITUTION -->
+<div class="section">
+  <div class="section-label">Reconstitution</div>
+
+  <div class="card purple">
+    <div class="card-title"><span class="dot purple"></span>Retatrutide</div>
+    <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg</span></div>
+    <div class="row"><span class="row-label">Bac water</span><span class="row-value purple-hl">1 mL</span></div>
+    <div class="row"><span class="row-label">Concentration</span><span class="row-value">10,000 mcg/mL</span></div>
+    <div class="row"><span class="row-label">Per 0.1 mL (10 units)</span><span class="row-value">1 mg</span></div>
+  </div>
+
+  <div class="card green">
+    <div class="card-title"><span class="dot green"></span>CJC-1295 + Ipamorelin</div>
+    <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg</span></div>
+    <div class="row"><span class="row-label">Bac water</span><span class="row-value highlight">2 mL</span></div>
+    <div class="row"><span class="row-label">Concentration</span><span class="row-value">5,000 mcg/mL</span></div>
+    <div class="row"><span class="row-label">Per 0.1 mL (10 units)</span><span class="row-value">500 mcg</span></div>
+  </div>
+
+  <div class="card orange">
+    <div class="card-title"><span class="dot orange"></span>BPC-157</div>
+    <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg</span></div>
+    <div class="row"><span class="row-label">Bac water</span><span class="row-value orange-hl">2 mL</span></div>
+    <div class="row"><span class="row-label">Concentration</span><span class="row-value">5,000 mcg/mL</span></div>
+    <div class="row"><span class="row-label">Per 0.1 mL (10 units)</span><span class="row-value">500 mcg</span></div>
+  </div>
+</div>
+
+<!-- RETA TITRATION -->
+<div class="section">
+  <div class="section-label">Retatrutide Titration · Sunday Nights</div>
+  <div class="card purple">
+    <div class="card-title"><span class="dot purple"></span>Dose Ramp Schedule</div>
+    <table class="titration-table">
+      <thead><tr><th>Weeks</th><th>Dates</th><th>Draw / Dose</th></tr></thead>
+      <tbody>
+        <tr class="active"><td>1 – 4</td><td>Mar 15 – Apr 5</td><td>10u → 1 mg</td></tr>
+        <tr><td>5 – 8</td><td>Apr 12 – May 3</td><td>20u → 2 mg</td></tr>
+        <tr><td>9 – 12</td><td>May 10 – May 31</td><td>40u → 4 mg</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- DAILY SCHEDULE -->
+<div class="section">
+  <div class="section-label">Daily Schedule</div>
+
+  <div class="schedule-block">
+    <div class="schedule-header">
+      <div class="time-icon am">☀️</div>
+      <div>
+        <div class="time-label">AM Shot</div>
+        <div class="time-sub">Fasted or pre-workout · every day</div>
+      </div>
+    </div>
+    <div class="schedule-items">
+      <div class="schedule-item">
+        <span class="sched-name">CJC/Ipa</span>
+        <span class="sched-dose green-d">6 units · 300 mcg</span>
+      </div>
+      <div class="schedule-item">
+        <span class="sched-name">BPC-157</span>
+        <span class="sched-dose orange-d">10 units · 500 mcg</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="schedule-block">
+    <div class="schedule-header">
+      <div class="time-icon pm">🌙</div>
+      <div>
+        <div class="time-label">PM Shot</div>
+        <div class="time-sub">Before bed · no carbs 60–90 min prior</div>
+      </div>
+    </div>
+    <div class="schedule-items">
+      <div class="schedule-item">
+        <span class="sched-name">CJC/Ipa</span>
+        <span class="sched-dose green-d">6 units · 300 mcg</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="schedule-block">
+    <div class="schedule-header">
+      <div class="time-icon sun">💉</div>
+      <div>
+        <div class="time-label">Sunday Night</div>
+        <div class="time-sub">Retatrutide · once weekly</div>
+      </div>
+    </div>
+    <div class="schedule-items">
+      <div class="schedule-item">
+        <span class="sched-name">Retatrutide</span>
+        <span class="sched-dose purple-d">See titration table</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INJECTION NOTES -->
+<div class="section">
+  <div class="section-label">Injection Notes</div>
+  <div class="card blue">
+    <div class="card-title"><span class="dot blue"></span>Sub-Q Protocol</div>
+    <div class="row"><span class="row-label">Syringe</span><span class="row-value">29–31g insulin</span></div>
+    <div class="row"><span class="row-label">Site</span><span class="row-value">Belly fat (sub-Q)</span></div>
+    <div class="row"><span class="row-label">Rotation</span><span class="row-value">Left / Right daily</span></div>
+    <div class="row"><span class="row-label">Storage</span><span class="row-value">Refrigerate after mixing</span></div>
+    <div class="row"><span class="row-label">Handling</span><span class="row-value">Swirl gently · never shake</span></div>
+  </div>
+</div>
+
+<!-- NUTRITION -->
+<div class="section">
+  <div class="section-label">Daily Nutrition Targets</div>
+  <div class="macro-strip">
+    <div class="macro-pill primary">
+      <div class="m-val">200g+</div>
+      <div class="m-label">Protein</div>
+    </div>
+    <div class="macro-pill">
+      <div class="m-val">Peri</div>
+      <div class="m-label">Carbs</div>
+    </div>
+    <div class="macro-pill">
+      <div class="m-val">Mod</div>
+      <div class="m-label">Fats</div>
+    </div>
+    <div class="macro-pill">
+      <div class="m-val">1 gal</div>
+      <div class="m-label">Water</div>
+    </div>
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="section">
+  <div class="section-label">Non-Negotiables</div>
+  <div class="rules-grid">
+    <div class="rule-chip"><span class="r-icon">🎯</span>Never skip doses</div>
+    <div class="rule-chip"><span class="r-icon">🥩</span>200g+ protein daily</div>
+    <div class="rule-chip"><span class="r-icon">🚶</span>8–12K steps/day</div>
+    <div class="rule-chip"><span class="r-icon">🏋️</span>Lift 4–5x / week</div>
+    <div class="rule-chip"><span class="r-icon">💧</span>Sodium + hydration</div>
+    <div class="rule-chip"><span class="r-icon">⚡</span>Full 12 weeks</div>
+  </div>
+</div>
+
+<!-- 12-WEEK SUPPLY -->
+<div class="section">
+  <div class="section-label">12-Week Supply Needed</div>
+  <div class="supply-row">
+    <div class="supply-card">
+      <div class="s-num">~3</div>
+      <div class="s-unit">vials</div>
+      <div class="s-label">Retatrutide</div>
+    </div>
+    <div class="supply-card">
+      <div class="s-num">~5</div>
+      <div class="s-unit">vials</div>
+      <div class="s-label">CJC/Ipa</div>
+    </div>
+    <div class="supply-card">
+      <div class="s-num">~5</div>
+      <div class="s-unit">vials</div>
+      <div class="s-label">BPC-157</div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK-BY-WEEK TIMELINE -->
+<div class="section">
+  <div class="section-label">Week-by-Week Timeline</div>
+
+  <div class="timeline-card tc-1">
+    <div class="tl-phase">Phase 1 · Foundation</div>
+    <div class="tl-dates">Weeks 1–2 &nbsp;·&nbsp; Mar 15 – Mar 28</div>
+    <span class="reta-badge r1">Reta 1 mg · Reta Only</span>
+    <div class="tl-title">Building the Base</div>
+    <ul class="tl-items">
+      <li class="phase-1">Reta only — mild appetite suppression kicking in</li>
+      <li class="phase-1">Getting comfortable with injection routine</li>
+      <li class="phase-1">Body establishing baseline response</li>
+      <li class="phase-1">Possible mild GI adjustment (nausea, fullness)</li>
+      <li class="phase-1">Weight may fluctuate as water balance shifts</li>
+    </ul>
+  </div>
+
+  <div class="timeline-card tc-2">
+    <div class="tl-phase">Phase 2 · Full Stack Online</div>
+    <div class="tl-dates">Weeks 3–4 &nbsp;·&nbsp; Mar 29 – Apr 11</div>
+    <span class="reta-badge r1">Reta 1 mg + CJC/Ipa + BPC</span>
+    <div class="tl-title">CJC/Ipa + BPC Come Online</div>
+    <ul class="tl-items">
+      <li class="phase-2">CJC/Ipa GH pulses start — deeper, more restorative sleep</li>
+      <li class="phase-2">BPC-157 accelerating recovery between sessions</li>
+      <li class="phase-2">Stable appetite suppression from Reta</li>
+      <li class="phase-2">Slight increase in muscle fullness from GH</li>
+      <li class="phase-2">Training recovery noticeably better by week 4</li>
+      <li class="phase-2">First signs of recomp starting</li>
+    </ul>
+  </div>
+
+  <div class="timeline-card tc-3">
+    <div class="tl-phase">Phase 3 · Acceleration</div>
+    <div class="tl-dates">Weeks 5–6 &nbsp;·&nbsp; Apr 12 – Apr 25</div>
+    <span class="reta-badge r2">Reta ↑ 2 mg</span>
+    <div class="tl-title">Fat Loss Accelerates</div>
+    <ul class="tl-items">
+      <li class="phase-3">Reta doubles to 2 mg — stronger appetite suppression</li>
+      <li class="phase-3">Possible GI sides for 3–5 days at new dose</li>
+      <li class="phase-3">CRITICAL: Do not let protein drop below 200g</li>
+      <li class="phase-3">Visible recomp — leaner while maintaining size</li>
+      <li class="phase-3">Sleep quality noticeably better from CJC/Ipa</li>
+      <li class="phase-3">Strength holding steady or still improving</li>
+      <li class="phase-3">Mirror starting to tell a different story</li>
+    </ul>
+  </div>
+
+  <div class="timeline-card tc-3">
+    <div class="tl-phase">Phase 3 cont. · Dialed In</div>
+    <div class="tl-dates">Weeks 7–8 &nbsp;·&nbsp; Apr 26 – May 9</div>
+    <span class="reta-badge r2">Reta 2 mg</span>
+    <div class="tl-title">Everything Clicking</div>
+    <ul class="tl-items">
+      <li class="phase-3">Body fully adapted to 2 mg — GI sides resolved</li>
+      <li class="phase-3">Recomp clearly visible — clothes fitting different</li>
+      <li class="phase-3">Recovery dialed — BPC + GH stack compounding</li>
+      <li class="phase-3">Should be approaching ~9–10% body fat</li>
+      <li class="phase-3">Vascularity starting to increase</li>
+      <li class="phase-3">Energy and performance strong</li>
+    </ul>
+  </div>
+
+  <div class="timeline-card tc-4">
+    <div class="tl-phase">Phase 4 · Final Push</div>
+    <div class="tl-dates">Weeks 9–10 &nbsp;·&nbsp; May 10 – May 23</div>
+    <span class="reta-badge r3">Reta ↑ 4 mg</span>
+    <div class="tl-title">Maximum Fat Burn</div>
+    <ul class="tl-items">
+      <li class="phase-4">Reta jumps to 4 mg — significant appetite suppression</li>
+      <li class="phase-4">Expect 3–7 days of GI adjustment — smaller, frequent meals</li>
+      <li class="phase-4">FORCE protein — shakes if you have to</li>
+      <li class="phase-4">Accelerated fat loss — stubborn areas responding</li>
+      <li class="phase-4">Definition sharpening week over week</li>
+      <li class="phase-4">Monitor energy — reduce volume slightly if needed</li>
+    </ul>
+  </div>
+
+  <div class="timeline-card tc-4">
+    <div class="tl-phase">Phase 4 cont. · Finish Line</div>
+    <div class="tl-dates">Weeks 11–12 &nbsp;·&nbsp; May 24 – Jun 7</div>
+    <span class="reta-badge r3">Reta 4 mg</span>
+    <div class="tl-title">Transformation Complete</div>
+    <ul class="tl-items">
+      <li class="phase-4">Target: ~8–9% body fat</li>
+      <li class="phase-4">Fuller, sharper, more defined physique</li>
+      <li class="phase-4">Strength maintained despite aggressive cut</li>
+      <li class="phase-4">Vascularity, separation, and detail on point</li>
+      <li class="phase-4">Protocol complete — assess and plan next phase</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PRO TIPS -->
+<div class="section">
+  <div class="section-label">Pro Tips & Recommendations</div>
+
+  <div class="tip-card">
+    <div class="tip-icon">📸</div>
+    <div class="tip-content">
+      <div class="tip-title">Progress Photos Every 2 Weeks</div>
+      <div class="tip-text">Same lighting, same time (AM fasted), same poses. Weeks 1, 3, 5, 7, 9, 11. The mirror lies — photos don't. This is how you'll see the recomp happening.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">⚖️</div>
+    <div class="tip-content">
+      <div class="tip-title">Weigh Daily, Average Weekly</div>
+      <div class="tip-text">Daily weight fluctuates. Weigh each morning post-bathroom, but only compare weekly averages. During recomp the scale may barely move while you're visually transforming.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🧪</div>
+    <div class="tip-content">
+      <div class="tip-title">Bloodwork at Week 6</div>
+      <div class="tip-text">Get a comprehensive panel mid-protocol — metabolic panel, lipids, fasting glucose, A1C, IGF-1. This is your mid-point check before the 4 mg ramp.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🤢</div>
+    <div class="tip-content">
+      <div class="tip-title">Managing GI Sides at Dose Bumps</div>
+      <div class="tip-text">When you jump to 2 mg and 4 mg, expect 3–7 days of nausea or fullness. Eat smaller, more frequent meals. Ginger tea or ginger chews help. Don't skip meals — shrink them.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🥤</div>
+    <div class="tip-content">
+      <div class="tip-title">Protein Insurance Policy</div>
+      <div class="tip-text">At 4 mg Reta, appetite will be crushed. Keep whey isolate or clear protein on hand always. If you can't eat solid, get 40–50g from a shake. Never let protein drop below 200g.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🧂</div>
+    <div class="tip-content">
+      <div class="tip-title">Electrolytes Are Non-Negotiable</div>
+      <div class="tip-text">Reta can cause dehydration. Sodium, potassium, magnesium daily. LMNT, Liquid IV, or salt your water. Keeps pumps full, performance high, prevents cramping.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">📋</div>
+    <div class="tip-content">
+      <div class="tip-title">Key Milestone Check-ins</div>
+      <div class="tip-text">
+        <strong>Week 4:</strong> Full stack running 2 weeks — sleep and recovery should be noticeably better. Reassess CJC/Ipa timing if not.<br><br>
+        <strong>Week 6:</strong> Bloodwork + progress photos. Visual recomp should be undeniable. Decision point before 4 mg ramp.<br><br>
+        <strong>Week 8:</strong> Should be ~9–10% BF. If behind, tighten nutrition. If on track, stay the course.<br><br>
+        <strong>Week 12:</strong> Final assessment. Photos, measurements, plan next phase.
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">🛌</div>
+    <div class="tip-content">
+      <div class="tip-title">Protect Your Sleep</div>
+      <div class="tip-text">CJC/Ipa's biggest benefit is the GH pulse during deep sleep. Take your PM shot 15–20 min before bed. Room cold and dark. No screens 30 min prior. This is where the magic happens.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="motto">Execute Daily</div>
+  <div class="f-sub">Consistency = Transformation &nbsp;·&nbsp; Mar 15 – Jun 7, 2026</div>
+</div>
+
+</body>
+</html>
