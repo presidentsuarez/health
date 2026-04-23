@@ -18,6 +18,8 @@
     --blue: #4ecdc4;
     --red: #ff3860;
     --purple: #a78bfa;
+    --pink: #ec4899;
+    --pink-dim: rgba(236,72,153,0.1);
     --border: #222230;
   }
 
@@ -113,10 +115,10 @@
     border-radius: 0 2px 2px 0;
   }
   .card.green::before { background: var(--accent); }
-  .card.orange::before { background: var(--orange); }
   .card.blue::before { background: var(--blue); }
   .card.red::before { background: var(--red); }
   .card.purple::before { background: var(--purple); }
+  .card.pink::before { background: var(--pink); }
 
   .card-title {
     font-size: 15px;
@@ -133,9 +135,9 @@
     flex-shrink: 0;
   }
   .dot.green { background: var(--accent); box-shadow: 0 0 8px rgba(197,248,42,0.4); }
-  .dot.orange { background: var(--orange); box-shadow: 0 0 8px rgba(255,107,53,0.4); }
   .dot.blue { background: var(--blue); box-shadow: 0 0 8px rgba(78,205,196,0.4); }
   .dot.purple { background: var(--purple); box-shadow: 0 0 8px rgba(167,139,250,0.4); }
+  .dot.pink { background: var(--pink); box-shadow: 0 0 8px rgba(236,72,153,0.4); }
 
   .row {
     display: flex;
@@ -154,8 +156,8 @@
     text-align: right;
   }
   .row-value.highlight { color: var(--accent); }
-  .row-value.orange-hl { color: var(--orange); }
   .row-value.purple-hl { color: var(--purple); }
+  .row-value.pink-hl { color: var(--pink); }
 
   /* === SCHEDULE === */
   .schedule-block {
@@ -189,9 +191,9 @@
     background: linear-gradient(135deg, rgba(78,205,196,0.12), rgba(78,140,250,0.08));
     border: 1px solid rgba(78,205,196,0.2);
   }
-  .time-icon.sun {
-    background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(139,92,246,0.1));
-    border: 1px solid rgba(167,139,250,0.2);
+  .time-icon.thu {
+    background: linear-gradient(135deg, rgba(167,139,250,0.18), rgba(139,92,246,0.1));
+    border: 1px solid rgba(167,139,250,0.25);
   }
   .schedule-header .time-label { font-weight: 700; font-size: 15px; }
   .schedule-header .time-sub { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
@@ -214,8 +216,90 @@
     white-space: nowrap;
   }
   .sched-dose.green-d { color: var(--accent); background: var(--accent-dim); }
-  .sched-dose.orange-d { color: var(--orange); background: rgba(255,107,53,0.1); }
   .sched-dose.purple-d { color: var(--purple); background: rgba(167,139,250,0.1); }
+  .sched-dose.pink-d { color: var(--pink); background: var(--pink-dim); }
+
+  /* === WEEKLY GRID === */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .day-col {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .day-col.has-reta {
+    border-color: rgba(167,139,250,0.5);
+    background: linear-gradient(180deg, rgba(167,139,250,0.1), var(--card));
+  }
+  .day-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .day-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin: 2px 0;
+  }
+  .day-dot.dg { background: var(--accent); }
+  .day-dot.dp { background: var(--purple); box-shadow: 0 0 6px rgba(167,139,250,0.5); }
+  .day-dot.dpink { background: var(--pink); box-shadow: 0 0 6px rgba(236,72,153,0.5); }
+  .day-mark {
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+  }
+  .day-mark .purple-mark { color: var(--purple); }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    padding: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .leg-item .leg-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .leg-dot.lg { background: var(--accent); }
+  .leg-dot.lp { background: var(--purple); }
+  .leg-dot.lpink { background: var(--pink); }
 
   /* === TITRATION TABLE === */
   .titration-table { width: 100%; border-collapse: collapse; }
@@ -301,10 +385,24 @@
     border-radius: 50%;
     border: 1.5px solid var(--text-dim);
   }
+  .tl-items li strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--text);
+    margin-right: 4px;
+    letter-spacing: 0.3px;
+  }
+  .tl-items li.milestone {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .tl-items li.milestone strong { color: var(--accent); }
   .phase-1::before { border-color: var(--blue) !important; }
   .phase-2::before { border-color: var(--accent) !important; }
   .phase-3::before { border-color: var(--orange) !important; }
   .phase-4::before { border-color: var(--red) !important; }
+  .phase-mots::before { border-color: var(--pink) !important; background: var(--pink) !important; }
 
   .timeline-card.tc-1::before { background: var(--blue); }
   .timeline-card.tc-1 .tl-phase { color: var(--blue); }
@@ -323,10 +421,12 @@
     padding: 2px 8px;
     border-radius: 5px;
     margin-bottom: 10px;
+    margin-right: 4px;
   }
   .reta-badge.r1 { color: var(--blue); background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.2); }
   .reta-badge.r2 { color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(197,248,42,0.15); }
   .reta-badge.r3 { color: var(--orange); background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.2); }
+  .reta-badge.rmots { color: var(--pink); background: var(--pink-dim); border: 1px solid rgba(236,72,153,0.2); }
 
   /* === TIPS === */
   .tip-card {
@@ -383,6 +483,8 @@
     color: var(--accent);
     line-height: 1;
   }
+  .supply-card.s-purple .s-num { color: var(--purple); }
+  .supply-card.s-pink .s-num { color: var(--pink); }
   .supply-card .s-unit {
     font-size: 10px;
     color: var(--text-dim);
@@ -437,7 +539,7 @@
   .footer .f-sub { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
 
   /* === ANIMATION === */
-  .card, .schedule-block, .rule-chip, .supply-card, .macro-pill, .timeline-card, .tip-card {
+  .card, .schedule-block, .rule-chip, .supply-card, .macro-pill, .timeline-card, .tip-card, .day-col, .legend {
     animation: fadeUp 0.4s ease both;
   }
   @keyframes fadeUp {
@@ -450,9 +552,9 @@
 
 <!-- HEADER -->
 <div class="header">
-  <div class="tag">12-Week Phase</div>
+  <div class="tag">14-Week Phase</div>
   <h1>Peptide Protocol</h1>
-  <div class="sub">11% → 8% BF &nbsp;·&nbsp; Full Stack &nbsp;·&nbsp; Recomp</div>
+  <div class="sub">11% → 8% BF &nbsp;·&nbsp; Reta · CJC/Ipa · MOTS-c</div>
 </div>
 
 <!-- RECONSTITUTION -->
@@ -464,37 +566,37 @@
     <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg</span></div>
     <div class="row"><span class="row-label">Bac water</span><span class="row-value purple-hl">1 mL</span></div>
     <div class="row"><span class="row-label">Concentration</span><span class="row-value">10,000 mcg/mL</span></div>
-    <div class="row"><span class="row-label">Per 0.1 mL (10 units)</span><span class="row-value">1 mg</span></div>
+    <div class="row"><span class="row-label">Per 1 unit</span><span class="row-value">100 mcg (0.1 mg)</span></div>
   </div>
 
   <div class="card green">
     <div class="card-title"><span class="dot green"></span>CJC-1295 + Ipamorelin</div>
-    <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg</span></div>
+    <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg blend</span></div>
     <div class="row"><span class="row-label">Bac water</span><span class="row-value highlight">2 mL</span></div>
     <div class="row"><span class="row-label">Concentration</span><span class="row-value">5,000 mcg/mL</span></div>
-    <div class="row"><span class="row-label">Per 0.1 mL (10 units)</span><span class="row-value">500 mcg</span></div>
+    <div class="row"><span class="row-label">Per 1 unit</span><span class="row-value">50 mcg blend</span></div>
   </div>
 
-  <div class="card orange">
-    <div class="card-title"><span class="dot orange"></span>BPC-157</div>
+  <div class="card pink">
+    <div class="card-title"><span class="dot pink"></span>MOTS-c</div>
     <div class="row"><span class="row-label">Vial</span><span class="row-value">10 mg</span></div>
-    <div class="row"><span class="row-label">Bac water</span><span class="row-value orange-hl">2 mL</span></div>
-    <div class="row"><span class="row-label">Concentration</span><span class="row-value">5,000 mcg/mL</span></div>
-    <div class="row"><span class="row-label">Per 0.1 mL (10 units)</span><span class="row-value">500 mcg</span></div>
+    <div class="row"><span class="row-label">Bac water</span><span class="row-value pink-hl">1 mL</span></div>
+    <div class="row"><span class="row-label">Concentration</span><span class="row-value">10,000 mcg/mL</span></div>
+    <div class="row"><span class="row-label">Per 1 unit</span><span class="row-value">100 mcg (0.1 mg)</span></div>
   </div>
 </div>
 
 <!-- RETA TITRATION -->
 <div class="section">
-  <div class="section-label">Retatrutide Titration · Sunday Nights</div>
+  <div class="section-label">Retatrutide Titration · Thursday Mornings</div>
   <div class="card purple">
     <div class="card-title"><span class="dot purple"></span>Dose Ramp Schedule</div>
     <table class="titration-table">
       <thead><tr><th>Weeks</th><th>Dates</th><th>Draw / Dose</th></tr></thead>
       <tbody>
-        <tr class="active"><td>1 – 4</td><td>Mar 15 – Apr 5</td><td>10u → 1 mg</td></tr>
-        <tr><td>5 – 8</td><td>Apr 12 – May 3</td><td>20u → 2 mg</td></tr>
-        <tr><td>9 – 12</td><td>May 10 – May 31</td><td>40u → 4 mg</td></tr>
+        <tr class="active"><td>1 – 4</td><td>Apr 23 – May 20</td><td>10u → 1 mg</td></tr>
+        <tr><td>5 – 10</td><td>May 21 – Jul 1</td><td>20u → 2 mg</td></tr>
+        <tr><td>11 – 14</td><td>Jul 2 – Jul 29</td><td>40u → 4 mg</td></tr>
       </tbody>
     </table>
   </div>
@@ -515,11 +617,27 @@
     <div class="schedule-items">
       <div class="schedule-item">
         <span class="sched-name">CJC/Ipa</span>
-        <span class="sched-dose green-d">6 units · 300 mcg</span>
+        <span class="sched-dose green-d">10 units · 500 mcg</span>
       </div>
       <div class="schedule-item">
-        <span class="sched-name">BPC-157</span>
-        <span class="sched-dose orange-d">10 units · 500 mcg</span>
+        <span class="sched-name">MOTS-c</span>
+        <span class="sched-dose pink-d">10 units · 1 mg</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="schedule-block">
+    <div class="schedule-header">
+      <div class="time-icon thu">💉</div>
+      <div>
+        <div class="time-label">Retatrutide · Thursday AM</div>
+        <div class="time-sub">Once weekly · with AM stack</div>
+      </div>
+    </div>
+    <div class="schedule-items">
+      <div class="schedule-item">
+        <span class="sched-name">Retatrutide</span>
+        <span class="sched-dose purple-d">See titration table</span>
       </div>
     </div>
   </div>
@@ -535,25 +653,72 @@
     <div class="schedule-items">
       <div class="schedule-item">
         <span class="sched-name">CJC/Ipa</span>
-        <span class="sched-dose green-d">6 units · 300 mcg</span>
+        <span class="sched-dose green-d">10 units · 500 mcg</span>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="schedule-block">
-    <div class="schedule-header">
-      <div class="time-icon sun">💉</div>
-      <div>
-        <div class="time-label">Sunday Night</div>
-        <div class="time-sub">Retatrutide · once weekly</div>
-      </div>
+<!-- WEEKLY CADENCE -->
+<div class="section">
+  <div class="section-label">Weekly Cadence</div>
+  <div class="week-grid">
+    <div class="day-col">
+      <div class="day-name">Mon</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark">·</div>
     </div>
-    <div class="schedule-items">
-      <div class="schedule-item">
-        <span class="sched-name">Retatrutide</span>
-        <span class="sched-dose purple-d">See titration table</span>
-      </div>
+    <div class="day-col">
+      <div class="day-name">Tue</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark">·</div>
     </div>
+    <div class="day-col">
+      <div class="day-name">Wed</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark">·</div>
+    </div>
+    <div class="day-col has-reta">
+      <div class="day-name">Thu</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dp"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark"><span class="purple-mark">+R</span></div>
+    </div>
+    <div class="day-col">
+      <div class="day-name">Fri</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark">·</div>
+    </div>
+    <div class="day-col">
+      <div class="day-name">Sat</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark">·</div>
+    </div>
+    <div class="day-col">
+      <div class="day-name">Sun</div>
+      <div class="day-dot dg"></div>
+      <div class="day-dot dpink"></div>
+      <div class="day-dot dg"></div>
+      <div class="day-mark">·</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item"><span class="leg-dot lg"></span>CJC/Ipa</div>
+    <div class="leg-item"><span class="leg-dot lpink"></span>MOTS-c</div>
+    <div class="leg-item"><span class="leg-dot lp"></span>Reta</div>
   </div>
 </div>
 
@@ -602,28 +767,28 @@
     <div class="rule-chip"><span class="r-icon">🚶</span>8–12K steps/day</div>
     <div class="rule-chip"><span class="r-icon">🏋️</span>Lift 4–5x / week</div>
     <div class="rule-chip"><span class="r-icon">💧</span>Sodium + hydration</div>
-    <div class="rule-chip"><span class="r-icon">⚡</span>Full 12 weeks</div>
+    <div class="rule-chip"><span class="r-icon">⚡</span>MOTS-c daily AM</div>
   </div>
 </div>
 
-<!-- 12-WEEK SUPPLY -->
+<!-- 14-WEEK SUPPLY -->
 <div class="section">
-  <div class="section-label">12-Week Supply Needed</div>
+  <div class="section-label">14-Week Supply Needed</div>
   <div class="supply-row">
-    <div class="supply-card">
-      <div class="s-num">~3</div>
+    <div class="supply-card s-purple">
+      <div class="s-num">~4</div>
       <div class="s-unit">vials</div>
       <div class="s-label">Retatrutide</div>
     </div>
     <div class="supply-card">
-      <div class="s-num">~5</div>
+      <div class="s-num">~10</div>
       <div class="s-unit">vials</div>
       <div class="s-label">CJC/Ipa</div>
     </div>
-    <div class="supply-card">
-      <div class="s-num">~5</div>
+    <div class="supply-card s-pink">
+      <div class="s-num">~10</div>
       <div class="s-unit">vials</div>
-      <div class="s-label">BPC-157</div>
+      <div class="s-label">MOTS-c</div>
     </div>
   </div>
 </div>
@@ -634,90 +799,90 @@
 
   <div class="timeline-card tc-1">
     <div class="tl-phase">Phase 1 · Foundation</div>
-    <div class="tl-dates">Weeks 1–2 &nbsp;·&nbsp; Mar 15 – Mar 28</div>
-    <span class="reta-badge r1">Reta 1 mg · Reta Only</span>
-    <div class="tl-title">Building the Base</div>
+    <div class="tl-dates">Weeks 1–2 &nbsp;·&nbsp; Apr 23 – May 6</div>
+    <span class="reta-badge r1">Reta 1 mg + CJC/Ipa + MOTS-c</span>
+    <div class="tl-title">Full Stack Launch</div>
     <ul class="tl-items">
-      <li class="phase-1">Reta only — mild appetite suppression kicking in</li>
-      <li class="phase-1">Getting comfortable with injection routine</li>
-      <li class="phase-1">Body establishing baseline response</li>
-      <li class="phase-1">Possible mild GI adjustment (nausea, fullness)</li>
-      <li class="phase-1">Weight may fluctuate as water balance shifts</li>
+      <li class="phase-1"><strong>Wk 1 · Apr 23–29:</strong> Everything launches. Reta Thu AM (1 mg, already tolerated). CJC/Ipa AM + PM begins. MOTS-c daily AM begins. Take Day 1 photos before first AM shot.</li>
+      <li class="phase-1"><strong>Wk 2 · Apr 30–May 6:</strong> By night 3–5, sleep gets noticeably DEEPER from CJC PM shot. Pumps fuller in workouts. Skin starting to look slightly better.</li>
+      <li class="phase-1">MOTS-c effects subtle and cumulative — may notice slightly better cardio endurance by end of Wk 2</li>
+      <li class="phase-1">Stick to baseline tracking: morning weight, hunger windows, sleep quality, energy</li>
+      <li class="phase-1 milestone">Milestone: First shifts will be in sleep and recovery, not yet visual</li>
     </ul>
   </div>
 
   <div class="timeline-card tc-2">
-    <div class="tl-phase">Phase 2 · Full Stack Online</div>
-    <div class="tl-dates">Weeks 3–4 &nbsp;·&nbsp; Mar 29 – Apr 11</div>
-    <span class="reta-badge r1">Reta 1 mg + CJC/Ipa + BPC</span>
-    <div class="tl-title">CJC/Ipa + BPC Come Online</div>
+    <div class="tl-phase">Phase 2 · Stack Adapting</div>
+    <div class="tl-dates">Weeks 3–4 &nbsp;·&nbsp; May 7 – May 20</div>
+    <span class="reta-badge r1">Reta 1 mg + Full Stack</span>
+    <div class="tl-title">First Visible Recomp</div>
     <ul class="tl-items">
-      <li class="phase-2">CJC/Ipa GH pulses start — deeper, more restorative sleep</li>
-      <li class="phase-2">BPC-157 accelerating recovery between sessions</li>
-      <li class="phase-2">Stable appetite suppression from Reta</li>
-      <li class="phase-2">Slight increase in muscle fullness from GH</li>
-      <li class="phase-2">Training recovery noticeably better by week 4</li>
-      <li class="phase-2">First signs of recomp starting</li>
+      <li class="phase-2"><strong>Wk 3 · May 7–13:</strong> Sleep clearly improved — wake more recovered. Pumps fuller and lasting longer. Strength stable or slightly up despite mild deficit.</li>
+      <li class="phase-2"><strong>Wk 4 · May 14–20:</strong> First clear visible recomp shift. Cardio endurance noticeably better from MOTS-c. Skin looking better, maybe slight tightness in waistline.</li>
+      <li class="phase-mots">MOTS-c effects compounding — energy more stable through the day, less mid-afternoon crash</li>
+      <li class="phase-2">Reta appetite suppression at 1 mg is steady — easy hitting protein target</li>
+      <li class="phase-2 milestone">Milestone: Wk 4 photos vs Day 1 — first undeniable change</li>
     </ul>
   </div>
 
   <div class="timeline-card tc-3">
     <div class="tl-phase">Phase 3 · Acceleration</div>
-    <div class="tl-dates">Weeks 5–6 &nbsp;·&nbsp; Apr 12 – Apr 25</div>
+    <div class="tl-dates">Weeks 5–7 &nbsp;·&nbsp; May 21 – Jun 10</div>
     <span class="reta-badge r2">Reta ↑ 2 mg</span>
     <div class="tl-title">Fat Loss Accelerates</div>
     <ul class="tl-items">
-      <li class="phase-3">Reta doubles to 2 mg — stronger appetite suppression</li>
-      <li class="phase-3">Possible GI sides for 3–5 days at new dose</li>
-      <li class="phase-3">CRITICAL: Do not let protein drop below 200g</li>
-      <li class="phase-3">Visible recomp — leaner while maintaining size</li>
-      <li class="phase-3">Sleep quality noticeably better from CJC/Ipa</li>
-      <li class="phase-3">Strength holding steady or still improving</li>
-      <li class="phase-3">Mirror starting to tell a different story</li>
+      <li class="phase-3"><strong>Wk 5 · May 21–27:</strong> Reta DOUBLES Thu morning (20u). Expect Thu–Sun GI rough patch — nausea, fullness, possible heartburn. Smaller meals, ginger tea.</li>
+      <li class="phase-3"><strong>Wk 6 · May 28–Jun 3:</strong> Body adapting to 2 mg. Appetite crushed. CRITICAL: force protein, shakes if needed. Don't let protein drop below 200g.</li>
+      <li class="phase-3"><strong>Wk 7 · Jun 4–10:</strong> GI sides resolve. Mirror starting to show sharper definition. <strong style="color:var(--accent)">BLOODWORK THIS WEEK</strong> — comprehensive panel + glucose/A1C/IGF-1.</li>
+      <li class="phase-mots">MOTS-c building — better workout endurance, faster HR recovery between sets</li>
+      <li class="phase-3">Strength holding steady or still improving despite the deficit</li>
+      <li class="phase-3 milestone">Milestone: Wk 7 photos — recomp should be undeniable vs Wk 1</li>
     </ul>
   </div>
 
   <div class="timeline-card tc-3">
     <div class="tl-phase">Phase 3 cont. · Dialed In</div>
-    <div class="tl-dates">Weeks 7–8 &nbsp;·&nbsp; Apr 26 – May 9</div>
-    <span class="reta-badge r2">Reta 2 mg</span>
-    <div class="tl-title">Everything Clicking</div>
+    <div class="tl-dates">Weeks 8–10 &nbsp;·&nbsp; Jun 11 – Jul 1</div>
+    <span class="reta-badge r2">Reta 2 mg · Steady State</span>
+    <div class="tl-title">Money Dose Working</div>
     <ul class="tl-items">
-      <li class="phase-3">Body fully adapted to 2 mg — GI sides resolved</li>
-      <li class="phase-3">Recomp clearly visible — clothes fitting different</li>
-      <li class="phase-3">Recovery dialed — BPC + GH stack compounding</li>
-      <li class="phase-3">Should be approaching ~9–10% body fat</li>
-      <li class="phase-3">Vascularity starting to increase</li>
-      <li class="phase-3">Energy and performance strong</li>
+      <li class="phase-3"><strong>Wk 8 · Jun 11–17:</strong> Recomp accelerating. Clothes definitely fitting different — belt notch tighter, shirts looser through the waist, tighter through chest/shoulders.</li>
+      <li class="phase-3"><strong>Wk 9 · Jun 18–24:</strong> Vascularity visible in arms during pump. Strength fully maintained. Should be tracking ~9–10% body fat. MOTS-c glucose handling tightens.</li>
+      <li class="phase-3"><strong>Wk 10 · Jun 25–Jul 1:</strong> <strong style="color:var(--accent)">DECISION POINT</strong> — push to 4 mg next week, or hold 2 mg longer if results are strong and side effects are clean.</li>
+      <li class="phase-3">Recovery dialed — GH pulse stack compounding, deep sleep consistent</li>
+      <li class="phase-mots">MOTS-c full effects emerging — energy stable, less mid-afternoon crash</li>
+      <li class="phase-3 milestone">Milestone: Wk 10 — biggest visual shift of the protocol so far</li>
     </ul>
   </div>
 
   <div class="timeline-card tc-4">
     <div class="tl-phase">Phase 4 · Final Push</div>
-    <div class="tl-dates">Weeks 9–10 &nbsp;·&nbsp; May 10 – May 23</div>
+    <div class="tl-dates">Weeks 11–12 &nbsp;·&nbsp; Jul 2 – Jul 15</div>
     <span class="reta-badge r3">Reta ↑ 4 mg</span>
     <div class="tl-title">Maximum Fat Burn</div>
     <ul class="tl-items">
-      <li class="phase-4">Reta jumps to 4 mg — significant appetite suppression</li>
-      <li class="phase-4">Expect 3–7 days of GI adjustment — smaller, frequent meals</li>
-      <li class="phase-4">FORCE protein — shakes if you have to</li>
-      <li class="phase-4">Accelerated fat loss — stubborn areas responding</li>
-      <li class="phase-4">Definition sharpening week over week</li>
-      <li class="phase-4">Monitor energy — reduce volume slightly if needed</li>
+      <li class="phase-4"><strong>Wk 11 · Jul 2–8:</strong> Reta jumps to 4 mg (40u). Major GI adjustment Thu through weekend — appetite minimal, possible fatigue. Reduce training volume slightly.</li>
+      <li class="phase-4"><strong>Wk 12 · Jul 9–15:</strong> 4 mg adapting. Stubborn fat areas (lower back, lower abs) starting to respond. Force protein via shakes — solid food may feel heavy.</li>
+      <li class="phase-4">FORCE protein 200g+ daily — appetite is crushed but lean mass depends on it</li>
+      <li class="phase-mots">MOTS-c critical here — helping spare lean mass during the aggressive cut phase</li>
+      <li class="phase-4">Definition sharpening week-over-week — pump retention noticeable post-workout</li>
+      <li class="phase-4">Watch energy carefully — if crashing, drop training volume not intensity</li>
+      <li class="phase-4 milestone">Milestone: Wk 12 photos — separation and detail emerging</li>
     </ul>
   </div>
 
   <div class="timeline-card tc-4">
     <div class="tl-phase">Phase 4 cont. · Finish Line</div>
-    <div class="tl-dates">Weeks 11–12 &nbsp;·&nbsp; May 24 – Jun 7</div>
+    <div class="tl-dates">Weeks 13–14 &nbsp;·&nbsp; Jul 16 – Jul 29</div>
     <span class="reta-badge r3">Reta 4 mg</span>
     <div class="tl-title">Transformation Complete</div>
     <ul class="tl-items">
-      <li class="phase-4">Target: ~8–9% body fat</li>
-      <li class="phase-4">Fuller, sharper, more defined physique</li>
-      <li class="phase-4">Strength maintained despite aggressive cut</li>
-      <li class="phase-4">Vascularity, separation, and detail on point</li>
-      <li class="phase-4">Protocol complete — assess and plan next phase</li>
+      <li class="phase-4"><strong>Wk 13 · Jul 16–22:</strong> Peak metabolic flexibility from MOTS-c + GH stack. Vascularity, separation, and detail visibly stacking. Strength still solid.</li>
+      <li class="phase-4"><strong>Wk 14 · Jul 23–29:</strong> <strong style="color:var(--accent)">FINAL ASSESSMENT WEEK</strong> — target ~8% BF. Final photos, measurements, full bloodwork. Plan transition phase.</li>
+      <li class="phase-4">Fuller, sharper, more defined physique — this is the payoff</li>
+      <li class="phase-mots">MOTS-c at full effect — peak glucose handling and fat oxidation</li>
+      <li class="phase-4">Strength maintained despite aggressive 14-week cut — credit to GH + protein discipline</li>
+      <li class="phase-4 milestone">Milestone: Plan a 4-week off cycle before next phase — let receptors reset</li>
     </ul>
   </div>
 </div>
@@ -730,7 +895,7 @@
     <div class="tip-icon">📸</div>
     <div class="tip-content">
       <div class="tip-title">Progress Photos Every 2 Weeks</div>
-      <div class="tip-text">Same lighting, same time (AM fasted), same poses. Weeks 1, 3, 5, 7, 9, 11. The mirror lies — photos don't. This is how you'll see the recomp happening.</div>
+      <div class="tip-text">Same lighting, same time (AM fasted), same poses. Weeks 1, 3, 5, 7, 9, 11, 13. The mirror lies — photos don't. This is how you'll see the recomp happening.</div>
     </div>
   </div>
 
@@ -745,8 +910,24 @@
   <div class="tip-card">
     <div class="tip-icon">🧪</div>
     <div class="tip-content">
-      <div class="tip-title">Bloodwork at Week 6</div>
-      <div class="tip-text">Get a comprehensive panel mid-protocol — metabolic panel, lipids, fasting glucose, A1C, IGF-1. This is your mid-point check before the 4 mg ramp.</div>
+      <div class="tip-title">Bloodwork at Week 7</div>
+      <div class="tip-text">Get a comprehensive panel mid-protocol — metabolic panel, lipids, fasting glucose, A1C, IGF-1. <strong>Add fasting glucose + A1C</strong> to confirm MOTS-c is working at the metabolic level. Mid-point check before the 4 mg ramp at week 11.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">📅</div>
+    <div class="tip-content">
+      <div class="tip-title">Thursday Is the Heavy Day</div>
+      <div class="tip-text">Thursday AM = CJC + MOTS-c + Reta — three injections in a row. Rotate sites: <strong>left belly for CJC, right belly for MOTS-c, lower belly for Reta.</strong> Plan Thursday as a lighter food day in case Reta nausea hits by afternoon.</div>
+    </div>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-icon">⚡</div>
+    <div class="tip-content">
+      <div class="tip-title">Daily MOTS-c Timing</div>
+      <div class="tip-text">Take MOTS-c with your AM CJC/Ipa shot, ideally <strong>30–60 min pre-workout</strong> on training days. The acute AMPK activation amplifies the workout's metabolic signal. Daily dosing mimics endogenous mitochondrial signaling rhythms — way smoother than 2x weekly bolus.</div>
     </div>
   </div>
 
@@ -754,7 +935,7 @@
     <div class="tip-icon">🤢</div>
     <div class="tip-content">
       <div class="tip-title">Managing GI Sides at Dose Bumps</div>
-      <div class="tip-text">When you jump to 2 mg and 4 mg, expect 3–7 days of nausea or fullness. Eat smaller, more frequent meals. Ginger tea or ginger chews help. Don't skip meals — shrink them.</div>
+      <div class="tip-text">When you jump to 2 mg (week 5) and 4 mg (week 11), expect 3–7 days of nausea or fullness — most intense Thu afternoon through weekend. Eat smaller, more frequent meals. Ginger tea or ginger chews help. Don't skip meals — shrink them.</div>
     </div>
   </div>
 
@@ -779,10 +960,10 @@
     <div class="tip-content">
       <div class="tip-title">Key Milestone Check-ins</div>
       <div class="tip-text">
-        <strong>Week 4:</strong> Full stack running 2 weeks — sleep and recovery should be noticeably better. Reassess CJC/Ipa timing if not.<br><br>
-        <strong>Week 6:</strong> Bloodwork + progress photos. Visual recomp should be undeniable. Decision point before 4 mg ramp.<br><br>
-        <strong>Week 8:</strong> Should be ~9–10% BF. If behind, tighten nutrition. If on track, stay the course.<br><br>
-        <strong>Week 12:</strong> Final assessment. Photos, measurements, plan next phase.
+        <strong>Week 4:</strong> Full stack running 4 weeks — sleep and recovery clearly better. First visible recomp shift.<br><br>
+        <strong>Week 7:</strong> Bloodwork + progress photos. Visual recomp should be undeniable. Mid-point reset.<br><br>
+        <strong>Week 10:</strong> Decision point — push to 4 mg Reta, or stay at 2 mg if results are strong and side effects manageable.<br><br>
+        <strong>Week 14:</strong> Final assessment. Photos, measurements, plan next phase.
       </div>
     </div>
   </div>
@@ -799,7 +980,7 @@
 <!-- FOOTER -->
 <div class="footer">
   <div class="motto">Execute Daily</div>
-  <div class="f-sub">Consistency = Transformation &nbsp;·&nbsp; Mar 15 – Jun 7, 2026</div>
+  <div class="f-sub">Consistency = Transformation &nbsp;·&nbsp; Apr 23 – Jul 29, 2026</div>
 </div>
 
 </body>
